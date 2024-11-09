@@ -22,6 +22,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            consumerProguardFiles ("consumer-rules.pro")
         }
     }
 
@@ -40,6 +41,34 @@ android {
     }
 
 
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(18)
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "com.github.ashishhgour"
+            artifactId = "custom_alert_dialog"
+            version = "1.0"
+
+            pom {
+                description.set("initial release")
+            }
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
 }
 
 
