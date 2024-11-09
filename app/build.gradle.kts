@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.example.customalertdialog"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.customalertdialog"
@@ -26,10 +26,17 @@ android {
             )
         }
     }
+    buildFeatures {
+        compose = true
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.14"
+    }
+
     kotlinOptions {
         jvmTarget = "1.8"
     }
@@ -43,6 +50,15 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(project(":custom-alert-dialog"))
+    implementation (libs.androidx.ui)
+    implementation (libs.androidx.ui.tooling.preview)
+    implementation (libs.androidx.activity.compose)
+    implementation (libs.androidx.compose.compiler)
+    implementation (libs.androidx.material3)
+    implementation (libs.androidx.lifecycle.viewmodel.compose)
+    debugImplementation (libs.androidx.ui.tooling)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

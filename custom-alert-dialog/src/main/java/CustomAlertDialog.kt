@@ -1,21 +1,21 @@
 package com.example.customalertdialog
 
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 
 class CustomAlertDialog private constructor(
-    private val context: Context,
     private val title: String?,
     private val message: String?,
     private val buttons: List<ButtonConfig>
 ) {
 
     // Data class to hold button title and action
-    data class ButtonConfig(val title: String, val action: (String) -> Unit)
+    data class ButtonConfig(val title: String, val action: () -> Unit)
 
     // Builder class to construct the dialog
-    class Builder(private val context: Context) {
+    class Builder {
         private var title: String? = null
         private var message: String? = null
         private val buttons = mutableListOf<ButtonConfig>()
@@ -33,44 +33,46 @@ class CustomAlertDialog private constructor(
         }
 
         // Add a button with a title and an action
-        fun addButton(title: String, action: (String) -> Unit): Builder {
+        fun addButton(title: String, action: () -> Unit): Builder {
             buttons.add(ButtonConfig(title, action))
             return this
         }
 
         // Build the dialog
         fun build(): CustomAlertDialog {
-            return CustomAlertDialog(context, title, message, buttons)
+            return CustomAlertDialog(title, message, buttons)
         }
     }
 
-    // Show the dialog
-    fun show() {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle(title)
-        builder.setMessage(message)
-
-        // Dynamically add buttons based on the list
-        buttons.forEachIndexed { index, button ->
-            when (index) {
-                0 -> builder.setPositiveButton(button.title) { _, _ -> button.action(button.title) }
-                1 -> builder.setNegativeButton(button.title) { _, _ -> button.action(button.title) }
-                2 -> builder.setNeutralButton(button.title) { _, _ -> button.action(button.title) }
-                else -> {
-                    // Custom button handling
-                    builder.setCancelable(false)
-                    val dialog = builder.create()
-
-                    // Use setButton() for additional buttons
-                    dialog.setButton(DialogInterface.BUTTON_POSITIVE, button.title) { _, _ ->
-                        button.action(button.title)
-                    }
-
-                    dialog.show()
+    // Compose function to show the dialog
+    @Composable
+    fun ShowDialog(onDismiss: () -> Unit) {
+        AlertDialog(
+            onDismissRequest = { onDismiss() },
+            title = {
+                title?.let {
+                    Text(text = it)
                 }
-            }
-        }
+            },
+            text = {
+                message?.let {
+                    Text(text = it)
+                }
+            },
+            confirmButton = {
+                // Add confirm buttons from the list
+                buttons.forEach { button ->
+                    Button(
+                        onClick = {
+                            button.action()
+                            onDismiss()
+                        }
+                    ) {
+                        Text(button.title)
+                    }
+                }
+            },
 
-        builder.show()
+        )
     }
 }

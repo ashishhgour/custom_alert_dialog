@@ -2,37 +2,67 @@ package com.example.customalertdialog
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val button = findViewById<Button>(R.id.btn_alert_dialog)
+        setContent {
+            MainScreen()
+        }
+    }
 
-        val resultTextView = findViewById<TextView>(R.id.alert_button_result)
+    @Composable
+    fun MainScreen() {
+        var resultText by remember { mutableStateOf("") }
+        var showDialog by remember { mutableStateOf(false) }
 
-        val dialog = CustomAlertDialog.Builder(this)
-            .setTitle("Sample Alert")
-            .setMessage("This is a customizable alert dialog.")
-
-            .addButton("Confirm") { buttonTitle ->
-                resultTextView.text = getString(R.string.button_clicked, buttonTitle)
-                Log.d("Dialog", "Confirm clicked")
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Button(
+                onClick = { showDialog = true },
+                modifier = Modifier.padding(bottom = 16.dp)
+            ) {
+                Text(text = "Show Alert Dialog")
             }
-            .addButton("Cancel") { buttonTitle ->
-                resultTextView.text = getString(R.string.button_clicked, buttonTitle)
-                Log.d("Dialog", "Cancel clicked")
-            }
-            .build()
 
-        // Show dialog on button click
-        button.setOnClickListener {
-            dialog.show()
+            Text(
+                text = resultText,
+                fontSize = 18.sp
+            )
+
+            if (showDialog) {
+                val customAlertDialog = CustomAlertDialog.Builder()
+                    .setTitle("Alert Title")
+                    .setMessage("This is a customizable alert dialog")
+                    .addButton("Confirm") {
+                        resultText = "Button clicked: Confirm"
+                        showDialog = false
+                    }
+                    .addButton("Cancel") {
+                        resultText = "Button clicked: Cancel"
+                        showDialog = false
+                    }
+
+                    .build()
+
+                customAlertDialog.ShowDialog(onDismiss = { showDialog = false })
+            }
         }
     }
 }
