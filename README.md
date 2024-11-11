@@ -102,3 +102,7 @@ fun MainScreen() {
 }
 ```
 
+Sample App
+For a working example of how to use this library in your project, check out our Sample App repository.
+https://github.com/ashishhgour/custom_alert_sample_app
+
