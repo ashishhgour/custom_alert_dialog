@@ -49,7 +49,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(project(":custom-alert-dialog"))
+    implementation (libs.custom.alert.dialog)
     implementation (libs.androidx.ui)
     implementation (libs.androidx.ui.tooling.preview)
     implementation (libs.androidx.activity.compose)
