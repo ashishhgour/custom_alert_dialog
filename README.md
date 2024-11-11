@@ -102,7 +102,24 @@ fun MainScreen() {
 }
 ```
 
-Sample App
+## Parameters
+
+| Parameter           | Type                              | Description                                                                                                                                                       |
+|---------------------|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `title`             | `String?`                         | The title text to display at the top of the alert dialog.                                                                                          |
+| `message`           | `String?`                         | The main message content of the alert dialog.                                                                                                     |
+| `buttons`           | `List<ButtonConfig>`              | A list of button labels and their corresponding actions. `ButtonConfig` holds the button title (`String`) and action (`() -> Unit`).                             |
+| `onDismiss`         | `() -> Unit`                      | A callback that is executed when the dialog is dismissed (e.g., tapping outside the dialog).                                                                    |
+
+### ButtonConfig Class
+
+| Parameter           | Type                              | Description                                                                                                                                                       |
+|---------------------|-----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `title`             | `String`                          | The label text displayed on the button.                                                                                                                           |
+| `action`            | `() -> Unit`                      | The action to perform when the button is clicked.                                                                                                                 |
+
+
+## Sample App
 For a working example of how to use this library in your project, check out our Sample App repository.
 https://github.com/ashishhgour/custom_alert_sample_app
 
